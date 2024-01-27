@@ -18,15 +18,23 @@ Install `net-tools` to use "ifconfig" command to check the current IP of the con
 
 **Notes:** Inside the new folder you have two main directories you will use, The first one is (bin) contains operations executable shell files, and the second one is (config) which contains the default configurations file and more we may add in the future.
 
-3- Kafka need zookeeper to run, so the first thing we should do is to go to bin directory and run: 
+3- Kafka needs zookeeper to run, so the first thing we should do is to go to bin directory and run: 
 
 `./zookeeper-server-start.sh -daemon ../config/zookeeper.properties` 
 
 `-daemon` makes the zookeeper run in the background and releases the terminal to use it (try to run without -daemon).
 
-4- To check if zookeeper runs correctly use `telnet localhost 2181` and the use `stat` command to see zookeeper status -you may face the problem of zookeeper whitelist like https://stackoverflow.com/questions/62667788/how-do-i-initialize-the-whitelist-for-apache-zookeeper - also you can simply use zookeeper-shell.sh.
+4- To check if zookeeper runs correctly use `telnet localhost 2181` and the use `stat` commands to see zookeeper status -you may face the problem of zookeeper whitelist like https://stackoverflow.com/questions/62667788/how-do-i-initialize-the-whitelist-for-apache-zookeeper - also you can simply use zookeeper-shell.sh.
 
 5- Now let's run the Kafka server, by a bit same method, `./kafka-server-start.sh ../config/server.properties` and now congrats!! WE HAVE LIFT OFF! -If not :( no worry .. keep reading-
 
 -------------------------- Configure the server.properties file --------------------------
+In `################## Socket Server Settings ###################` section we need to set-up the listeners (https://www.confluent.io/blog/kafka-listeners-explained/)
+Such as: 
+listeners=LISNERONE://localhost:9092
 
+advertised.listeners=LISNERONE://localhost:9092
+
+listener.security.protocol.map=LISNERONE:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL
+
+inter.broker.listener.name=LISNERONE
