@@ -29,7 +29,9 @@ Install `net-tools` to use "ifconfig" command to check the current IP of the con
 5- Now let's run the Kafka server, by a bit same method, `./kafka-server-start.sh ../config/server.properties` and now congrats!! WE HAVE LIFT OFF! -If not :( no worry .. keep reading-
 
 -------------------------- Configure the server.properties file --------------------------
+
 In `################## Socket Server Settings ###################` section we need to set-up the listeners (https://www.confluent.io/blog/kafka-listeners-explained/)
+
 Such as: 
 listeners=LISNERONE://localhost:9092
 
@@ -38,3 +40,21 @@ advertised.listeners=LISNERONE://localhost:9092
 listener.security.protocol.map=LISNERONE:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL
 
 inter.broker.listener.name=LISNERONE
+
+------------------------------- Kafka Structure --------------------------------------------
+
+A cluster is a set of nodes (Not Precise), Kafka deals with parts inside nodes, and those parts are Kafka brokers, we set up each broker by the process mentioned above with the server.properties configuration file. 
+
+Each time we create a topic, we need to specify `PartitionCount` which describes how many parts will this broker be, and `replication factor` which sets how many copy will be for each partition, this number should be no more than the count of brokers.
+
+Let us say, we have a cluster of two nodes, node1 has 2 brokers (0,1) and node2 has 3 brokers (2,3,4) when creating a topic with 4 partitions, replication factor of 3:
+
+Partition 1: Leader on Broker 1 and 2 other copies on Broker 3 & Broker 4
+
+Partition 2: Leader on Broker 2 and 2 other copies on Broker 1 & Broker 5
+
+Partition 1: Leader on Broker 3 and 2 other copies on Broker 1 & Broker 2
+
+Partition 1: Leader on Broker 5 and 2 other copies on Broker 4 & Broker 3
+
+
