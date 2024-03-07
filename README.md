@@ -58,3 +58,21 @@ Partition 1: Leader on Broker 3 and 2 other copies on Broker 1 & Broker 2
 Partition 1: Leader on Broker 5 and 2 other copies on Broker 4 & Broker 3
 
 
+-------------------------------------------------------------------------------------------------------------------------------------------
+## Apache AirFlow
+
+1- You can install the stock one on any machine with Python and build it from scratch.
+
+2- We prefer to use the docker image edition, Here is how to do it:
+
+    - First, find one suitable airflow edition that fits your need from their website, and pull it to your docker.
+    - Prepare a Dockerfile to build your updated custom image (or run it directly if you don't want this step), file be like:
+                        ```FROM apache/airflow:latest
+                        USER root
+
+                        RUN apt-get update && \
+                        apt-get -y install git && \
+                        apt-get clean
+
+                        USER airflow```
+
